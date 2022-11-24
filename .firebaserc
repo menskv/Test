@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "firebase deploy": "test-de8d5",
+    "default": "test-de8d5"
+  },
+  "targets": {},
+  "etags": {}
+}

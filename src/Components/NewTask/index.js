@@ -1,28 +1,57 @@
-import React, {useState} from 'react';
+import React from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
-export const NewTask = () => {
-    const [startDate, setStartDate] = useState(new Date());
-    const [file, setFile] = useState()
-    function handleChange(event) {
+import "./style.less"
+import {taskController} from "../../api";
+import dayjs from "dayjs";
 
-        setFile(event.target.files[0])
+export const NewTask = () => {
+    const [date, setDate] = React.useState(new Date());
+    const [description, setDescription] = React.useState("")
+    const [title, setTitle] = React.useState("")
+    const [file, setFile] = React.useState({})
+    const sendFiles = async () => {
+        await taskController.postTask({
+            date: dayjs(date).isValid() ? dayjs(date)?.toISOString() : null,
+            description,
+            title,
+            file
+        })
     }
+
     return (
         <div className="Modal">
-            <div className="Title-Modal" >
-                <input type="Title" />
-            </div>
-            <div className="Description">
-                <input type="text"/>
-            </div>
-            <div className="Date-piker">
+            <div className="Modal-wrapper">
+                <div className="Modal-wrapper-input">
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        placeholder="Название"
+                    />
+                </div>
+                <div className="Modal-wrapper-input">
+                    <input
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
+                        type="text"
+                        placeholder="Текст"
+                    />
+                </div>
+                <div className="Modal-wrapper-input">
+                    <input type="file"
+                           onChange={e => {
+                               const files = e.target.files
+                               setFile(files[0])
+                           }}/>
+                </div>
                 <DatePicker
-                    selected={startDate} onChange={(date) => setStartDate(date)}
+                    selected={date}
+                    onChange={(date) => setDate(date)}
                 />
+                <button type="submit" onClick={sendFiles}>Upload</button>
             </div>
-            <input type="file" onChange={handleChange}/>
-            <button type="submit">Upload</button>
+
         </div>
 
     );

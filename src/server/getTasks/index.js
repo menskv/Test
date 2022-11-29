@@ -1,5 +1,3 @@
-const response = require("./response.json")
-
-module.exports = (req, res) => {
-    res.send(response)
+module.exports = (req,res) =>{
+    res.send(require("../response.json"))
 }

@@ -1,46 +1,55 @@
-import React, {useEffect} from 'react';
-import {useState} from "react";
-import {NewTask} from "../NewTask";
-import "./style.less"
+import React from "react";
 import {taskController} from "../../api";
+import {NewTask} from "../NewTask";
+import {EditTask} from "../EditTask";
+import "./style.css"
 
 export const Table = () => {
-    const [button, setButton] = useState(false)
-    const [post, setPost] = useState({data: [
-        {
-        title: "zalupa", description:"xyi"
-        }
-        ]})
-    useEffect(() => {
-        taskController.getTask().then(res => setPost(res.data)).catch(console.error)
+    const [post, setPost] = React.useState([])
 
+    React.useEffect(() => {
+        taskController.getTask().then(res => setPost(res.data))
     }, [])
 
-    function active() {
-        setButton(true)
+    function deleteTask(id) {
+        return () => {
+            taskController.deleteTask(id).then(res => setPost(res.data))
+        }
     }
 
+
     return (
-        <div className="Wrapper">
-            <div className="Wrapper-title">
-                Тестовое задание
-            </div>
-            <div className="Wrapper-section">
-                <div className="Wrapper-title-section">
-                    <button onClick={active}>
-                        Добавить таск
-                    </button>
-                    {button && <NewTask/>}
+        <div className="modal">
+            <div className="modal-dialog">
+                <span>Тестовое задание</span>
+                <div className="modal-content">
+                    <NewTask
+                        post={post}
+                        setPost={setPost}
+                    />
+                    <div className="modal-header">
+                        {post?.map((item, index, array) => {
+                            return <div key={`${item.title}${item.description}${item.delete}${item.edit}${index}`}
+                                        style={{
+                                            display: "flex",
+                                            width: 500,
+                                            justifyContent: "space-between",
+                                            marginBottom: 20
+                                        }}>
+                                <div>{item.title}</div>
+                                <div>{item.description}</div>
+                                <button onClick={deleteTask(item.id)}>Удалить
+                                </button>
+                                {setPost && <EditTask
+                                    setPost={setPost}
+                                    values={item}
+                                />}
+                            </div>
+                        })}
+                    </div>
                 </div>
-                <div className="Wrapper-task-section">
-                    {post.data.map((item, index, array)=>{
-                        return <div style={{display: "flex", width: 200, justifyContent: "space-between"}}>
-                            <div>{item.title}</div>
-                            <div>{item.description}</div>
-                        </div>
-                    })}
-                </div>
             </div>
+
         </div>
     );
 };

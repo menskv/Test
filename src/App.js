@@ -1,5 +1,4 @@
-import {Table} from "./Components/Table";
-import "./App.less"
+import {Table} from "./components/Table";
 
 function App() {
 

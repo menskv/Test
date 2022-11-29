@@ -4,8 +4,9 @@ import "react-datepicker/dist/react-datepicker.css"
 import {taskController} from "../../api";
 import dayjs from "dayjs";
 import "./style.css"
+import {Button} from "../Button";
 
-function Modal({ children, shown, close }) {
+function Modal({children, shown, close}) {
     return shown ? (
         <div
             className="modal-backdrop"
@@ -21,13 +22,16 @@ function Modal({ children, shown, close }) {
                     e.stopPropagation();
                 }}
             >
-                <button onClick={close}>Close</button>
+                <Button onClick={close}>x</Button>
                 {children}
             </div>
         </div>
     ) : null;
 }
 
+function goToImg() {
+
+}
 
 export const NewTask = (props) => {
     const [date, setDate] = React.useState(new Date());
@@ -53,8 +57,8 @@ export const NewTask = (props) => {
     }
     return (
         <>
-        <button onClick={() => setModal(true)}>Добавить таск</button>
-            <Modal shown={modalShown} close={() =>{
+            <Button onClick={() => setModal(true)}>Добавить таск</Button>
+            <Modal shown={modalShown} close={() => {
                 setModal(false)
             }}>
                 <div className="modal-backdrop">
@@ -75,22 +79,27 @@ export const NewTask = (props) => {
                                 placeholder="Текст"
                             />
                         </div>
-                        <div className="modal-wrapper-input">
-                            <input type="file"
+                        <div>
+                            <input id="input-file" className="modal-input-file" type="file"
                                    onChange={e => {
                                        const files = e.target.files
                                        setFile(files[0])
                                    }}/>
+                                <label className="img-file" htmlFor="input-file">
+                                    <span className="label-text">Загрузить </span>
+                                </label>
                         </div>
-                        <DatePicker
-                            selected={date}
-                            onChange={(date) => setDate(date)}
+
+                        <DatePicker className="modal-wrapper-button"
+                                    selected={date}
+                                    onChange={(date) => setDate(date)}
                         />
-                        <button type="submit"
+                        <Button className="modal-wrapper-button"
+                                type="submit"
                                 onClick={sendFiles}
                         >
                             Загрузить
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </Modal>

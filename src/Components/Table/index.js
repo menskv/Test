@@ -3,6 +3,7 @@ import {taskController} from "../../api";
 import {NewTask} from "../NewTask";
 import {EditTask} from "../EditTask";
 import "./style.css"
+import {Button} from "../Button";
 
 export const Table = () => {
     const [post, setPost] = React.useState([])
@@ -20,33 +21,34 @@ export const Table = () => {
 
     return (
         <div className="modal">
-            <div className="modal-dialog">
+            <div className="modal-title">
                 <span>Тестовое задание</span>
                 <div className="modal-content">
                     <NewTask
                         post={post}
                         setPost={setPost}
                     />
-                    <div className="modal-header">
+                    <ul className="list">
                         {post?.map((item, index, array) => {
-                            return <div key={`${item.title}${item.description}${item.delete}${item.edit}${index}`}
-                                        style={{
-                                            display: "flex",
-                                            width: 500,
-                                            justifyContent: "space-between",
-                                            marginBottom: 20
-                                        }}>
+                            return <li className="list-item"
+                                       key={`${item.title}${item.description}${item.delete}${item.edit}${index}`}
+                                       style={{
+                                           display: "flex",
+                                           width: 500,
+                                           justifyContent: "space-between",
+                                           marginBottom: 20
+                                       }}>
                                 <div>{item.title}</div>
                                 <div>{item.description}</div>
-                                <button onClick={deleteTask(item.id)}>Удалить
-                                </button>
-                                {setPost && <EditTask
+                                <Button onClick={deleteTask(item.id)}>Удалить
+                                </Button>
+                                <EditTask
                                     setPost={setPost}
                                     values={item}
-                                />}
-                            </div>
+                                />
+                            </li>
                         })}
-                    </div>
+                    </ul>
                 </div>
             </div>
 

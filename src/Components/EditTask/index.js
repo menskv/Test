@@ -1,5 +1,6 @@
 import React from 'react';
 import {taskController} from "../../api";
+import {Button} from "../Button";
 
 export const EditTask = (props) => {
     const [show, setShow] = React.useState(false)
@@ -14,12 +15,12 @@ export const EditTask = (props) => {
 
     return (
         <div>
-            <button onClick={() => setShow(!show)}>Редактировать</button>
+            <Button onClick={() => setShow(!show)}>Редактировать</Button>
             {
-                show && <div style={{ display: "flex", flexDirection: "column" }}>
+                show && <div style={{ display: "flex", flexDirection: "column", position: "absolute" }}>
                     <input onChange={setValue("title")} value={form.title} type="text" />
                     <input onChange={setValue("description")} value={form.description} type="text" />
-                    <button onClick={update()}>update</button>
+                    <Button onClick={update()}>update</Button>
                 </div>
             }
         </div>
